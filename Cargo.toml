@@ -1,0 +1,9 @@
+[package]
+name = "async-chat-server"
+version = "0.1.0"
+authors = ["dusski <dusski@example.com>"]
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0"
+tokio = { version = "1.0", features = ["full"] }
