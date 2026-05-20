@@ -1,5 +1,6 @@
 mod client;
 mod state;
+mod ssh_server;
 
 use state::SharedState;
 use tokio::{net::TcpListener, sync::watch};
