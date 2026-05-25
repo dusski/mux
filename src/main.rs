@@ -16,15 +16,16 @@ async fn main() -> anyhow::Result<()> {
 
     let key_path = std::path::Path::new("host_key.pem");
     let host_key = if key_path.exists() {
-        let key_str = std::fs::read(key_path)?;
-        russh::keys::decode_openssh(&key_str, None)?
+        let key_str = std::fs::read_to_string(key_path)?;
+        russh::keys::load_secret_key(&key_str, None)?
     } else {
         let new_key = russh::keys::PrivateKey::random(
             &mut russh::keys::key::safe_rng(),
             russh::keys::Algorithm::Ed25519,
         )?;
-        let openssh_pem = new_key.to_openssh(ssh_key::LineEnding::LF)?;
-        std::fs::write(key_path, &openssh_pem)?;
+        let mut pem_string = Vec::new();
+        russh::keys::encode_pkcs8_pem(&new_key, &mut pem_string)?;
+        std::fs::write(key_path, pem_string)?;
         println!("Generated new host key and saved to {:?}", key_path);
         new_key
     };
