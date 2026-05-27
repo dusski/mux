@@ -23,7 +23,7 @@ pkgs.callPackage (
     buildInputs =
       [
       ];
-    RUSTC_VERSION = overrides.toolchain.channel;
+    RUSTC_VERSION = "1.95.0";
     # https://github.com/rust-lang/rust-bindgen#environment-variables
     shellHook = ''
       export PATH="''${CARGO_HOME:-~/.cargo}/bin":"$PATH"
