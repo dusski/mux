@@ -2,7 +2,7 @@ mod client;
 mod ssh_server;
 mod state;
 
-use russh::{keys::ssh_key, server::Server};
+use russh::{server::Server};
 use ssh_server::ChatSSHServer;
 use state::SharedState;
 use std::sync::Arc;
@@ -23,9 +23,11 @@ async fn main() -> anyhow::Result<()> {
             &mut russh::keys::key::safe_rng(),
             russh::keys::Algorithm::Ed25519,
         )?;
-        let mut pem_string = Vec::new();
-        russh::keys::encode_pkcs8_pem(&new_key, &mut pem_string)?;
-        std::fs::write(key_path, pem_string)?;
+        let openssh_key_string = new_key.to_openssh(russh::keys::ssh_key::LineEnding::LF)?;
+        std::fs::write(key_path, openssh_key_string.as_bytes())?;
+        // let mut pem_string = Vec::new();
+        // russh::keys::encode_pkcs8_pem(&new_key, &mut pem_string)?;
+        // std::fs::write(key_path, pem_string)?;
         println!("Generated new host key and saved to {:?}", key_path);
         new_key
     };
