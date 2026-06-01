@@ -1,4 +1,3 @@
-mod client;
 mod ssh_server;
 mod state;
 
