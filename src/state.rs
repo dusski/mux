@@ -1,16 +1,24 @@
 use std::collections::HashMap;
 use std::sync::Arc;
-use tokio::sync::{Mutex, broadcast};
+use tokio::sync::{Mutex, broadcast, RwLock};
 
 #[derive(Clone)]
+pub struct UserInfo {
+    pub nickname: String,
+    pub current_room: String,
+}
+
+#[derive(Clone, Default)]
 pub struct SharedState {
     rooms: Arc<Mutex<HashMap<String, broadcast::Sender<String>>>>,
+    pub active_users: Arc<RwLock<HashMap<String, UserInfo>>>,
 }
 
 impl SharedState {
     pub fn new() -> Self {
         Self {
             rooms: Arc::new(Mutex::new(HashMap::new())),
+            active_users: Arc::new(RwLock::new(HashMap::new())),
         }
     }
 
