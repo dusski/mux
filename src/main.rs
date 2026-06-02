@@ -24,9 +24,6 @@ async fn main() -> anyhow::Result<()> {
         )?;
         let openssh_key_string = new_key.to_openssh(russh::keys::ssh_key::LineEnding::LF)?;
         std::fs::write(key_path, openssh_key_string.as_bytes())?;
-        // let mut pem_string = Vec::new();
-        // russh::keys::encode_pkcs8_pem(&new_key, &mut pem_string)?;
-        // std::fs::write(key_path, pem_string)?;
         println!("Generated new host key and saved to {:?}", key_path);
         new_key
     };
@@ -43,31 +40,3 @@ async fn main() -> anyhow::Result<()> {
 
     Ok(())
 }
-
-// let listener = TcpListener::bind("127.0.0.1:8080").await?;
-// println!("Chat server listening on :8080");
-
-// // watch channel for graceful shutdown
-// let (shutdown_sender, shutdown_receiver) = watch::channel(false);
-
-// loop {
-//     tokio::select! {
-//         accept_result = listener.accept() => {
-//             let (socket, addr) = accept_result?;
-//             println!("[{addr}] Connected");
-
-//             let state_clone = _state.clone();
-//             let shutdown_receiver_clone = shutdown_receiver.clone();
-//             tokio::spawn(async move {
-//                 client::handle_connection(socket, state_clone, shutdown_receiver_clone).await;
-//                 println!("[{addr}] Disconnected");
-//             });
-//         }
-
-//         _ = tokio::signal::ctrl_c() => {
-//             println!("Shutting down server...");
-//             shutdown_sender.send(true).unwrap();
-//             break;
-//         }
-//     }
-// }
