@@ -1,5 +1,6 @@
 mod ssh_server;
 mod state;
+mod renderer;
 
 use russh::{server::Server};
 use ssh_server::ChatSSHServer;
